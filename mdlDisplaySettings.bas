@@ -55,7 +55,6 @@ Private Declare Function GetSystemMetrics Lib "user32" _
 
 Public Function SetDisplayMode _
 (Optional ByVal Width As Integer, Optional ByVal Height As Integer, Optional ByVal Color As Integer) As Long
-    On Error GoTo ErrorHandler
     Dim pNewMode As DEVMODE, pOldMode As Long
     With pNewMode
         .dmSize = Len(pNewMode)
@@ -74,8 +73,4 @@ Public Function SetDisplayMode _
     End With
     pOldMode = lstrcpy(pNewMode, pNewMode)
     SetDisplayMode = ChangeDisplaySettingsA(pOldMode, 1)
-    MsgBox "Well done!", vbInformation
-    Exit Function
-ErrorHandler:
-    MsgBox Err.Description, vbCritical
 End Function
