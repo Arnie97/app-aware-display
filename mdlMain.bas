@@ -9,6 +9,7 @@ Private Sub Main()
     Dim original_width As Integer, original_height As Integer
     argv_pos = 0
     args_pos = 0
+    argv(0) = 640: argv(1) = 480
     args = Split(Command, " ")
     args_count = UBound(args) + 1
     If args_count = 0 Then
@@ -33,8 +34,7 @@ Private Sub Main()
     original_height = Screen.Height / Screen.TwipsPerPixelY
     SetDisplayMode argv(0), argv(1), argv(2)
     If Len(temp_s) Then
-        Shell temp_s, vbMaximizedFocus
-        MsgBox Str(argv(0)) & Str(argv(1)) & Str(argv(2)) & vbCrLf & temp_s
+        Call ShellWait(temp_s, vbMaximizedFocus)
         SetDisplayMode original_width, original_height
     End If
 End Sub
@@ -43,7 +43,8 @@ Private Sub ShowUsage(Optional Message As String)
     If Len(Message) Then
         Message = Message & vbCrLf
     End If
-    MsgBox (Message & "Usage: " & App.EXEName & _
-        " [width] [height] [color-depth] program [arguments]" & _
-        vbCrLf & "Bugs and comments to arnie97@gmail.com"), vbInformation
+    MsgBox (Message & "Usage: " & vbCrLf & _
+        App.EXEName & " [width] [height] [color-depth] program [arguments]" & vbCrLf & _
+        App.EXEName & " width height [color-depth]" & vbCrLf & _
+        "Bugs and comments to arnie97@gmail.com"), vbInformation
 End Sub
