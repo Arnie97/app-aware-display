@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include <getopt.h>
 #include <windows.h>
+#include "asprintf.h"
 #include "app-aware-display.h"
 
 
