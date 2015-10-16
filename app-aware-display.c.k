@@ -10,19 +10,16 @@
 
 
 int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmdShow):
-    /* Generate an ANSI-compliant argument list */
-    int argc, style
-    char *argv[] = CommandLineToArgv(lpCmdLine, &argc)
-
     /* Get the original display settings */
     DEVMODE original_settings, updated_settings
     EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &original_settings)
     updated_settings = original_settings
 
     /* Parse command line options into the DEVMODE structure */
-    if parse_options(argc, argv, &updated_settings) == 0:
+    if parse_options(&updated_settings) == 0:
         show_help(EXIT_SUCCESS, NULL)
 
+    int style
     /* If how the window is to be shown is specified, */
     if updated_settings.dmReserved1:
         /* Then a program command line must be given at the same time. */
@@ -49,7 +46,6 @@ int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmd
     *cmd = '\0'
     while optind < argc:
         strcat(cmd, argv[optind++])
-    LocalFree(argv)
 
     /* Creates a child process and wait until its exit, */
     WinExec(cmd, style)
@@ -59,7 +55,7 @@ int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmd
     return EXIT_SUCCESS
 
 
-int parse_options(int argc, char *argv[], DEVMODE *dev):
+int parse_options(DEVMODE *dev):
     opterr = 0  // Suppress default error output
     static option long_opts[] = {
         {"help",    no_argument,       NULL, 'H'},
