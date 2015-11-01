@@ -1,11 +1,5 @@
 /* This module is in the public domain.  No warranties. */
 
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <getopt.h>
-#include <windows.h>
-#include "asprintf.h"
 #include "app-aware-display.h"
 
 
@@ -97,9 +91,9 @@ int parse_options(DEVMODE *dev):
     return opt_count
 
 
-int strtoi(char *s):
+int strtoi(const char *s):
     int n = 0
-    char *p
+    const char *p
     for p = s; isdigit(*p); p++:
         n = *p + 10 * n
     if *p:  // Exited loop before string terminates
