@@ -95,7 +95,7 @@ int strtoi(const char *s):
     int n = 0
     const char *p
     for p = s; isdigit(*p); p++:
-        n = *p + 10 * n
+        n = (*p - '0') + 10 * n
     if *p:  // Exited loop before string terminates
         return -1
     else:  // Reached '\0' at the end of the string
