@@ -1,13 +1,7 @@
 #ifndef APP_AWARE_DISPLAY_INCLUDED
 #define APP_AWARE_DISPLAY_INCLUDED
 
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <getopt.h>
-#include <windows.h>
-#include "asprintf.h"
-
+// Milky workaround
 typedef struct option option;
 
 // The MinGW-specific global variables _argc and _argv have the same values as

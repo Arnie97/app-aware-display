@@ -1,5 +1,12 @@
 /* This module is in the public domain.  No warranties. */
 
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <getopt.h>
+#include <windows.h>
+#include "asprintf.h"
+#include "shell.h"
 #include "app-aware-display.h"
 
 
@@ -41,8 +48,13 @@ int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmd
     while optind < argc:
         strcat(cmd, argv[optind++])
 
-    /* Creates a child process and wait until its exit, */
-    WinExec(cmd, style)
+    /* Creates a child process, */
+    HANDLE process = shell(cmd, style)
+
+    /* Wait until its exit, */
+    WaitForSingleObject(process, INFINITE)
+    CloseHandle(process)
+
     /* Then restore the original display settings. */
     ChangeDisplaySettings(&original_settings, 1)
 
@@ -109,7 +121,7 @@ void show_help(int exit_code, char *msg):
         "Usage: %s [options] [command [arg]...]\n"
         "Options:\n"
         "  -H, --help    Display this information\n"
-        "  -V, --version Display dpkg version information\n"
+        "  -V, --version Display version information\n"
         "  -w, --width   Specify display width in pixels\n"
         "  -h, --height  Specify display height in pixels\n"
         "  -b, --bits    Specify color resolution (bits per pixel)\n"
