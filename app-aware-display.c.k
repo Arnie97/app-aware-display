@@ -17,6 +17,7 @@ int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmd
     updated_settings = original_settings
 
     /* Parse command line options into the DEVMODE structure */
+    updated_settings.dmReserved1 = 0
     if parse_options(&updated_settings) == 0:
         show_help(EXIT_SUCCESS, NULL)
 
