@@ -53,8 +53,11 @@ int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmd
     HANDLE process = shell(cmd, style)
 
     /* Wait until its exit, */
-    WaitForSingleObject(process, INFINITE)
-    CloseHandle(process)
+    if process:
+        WaitForSingleObject(process, INFINITE)
+        CloseHandle(process)
+    else:
+        show_help(EXIT_FAILURE, "Failed to execute the specified program.")
 
     /* Then restore the original display settings. */
     ChangeDisplaySettings(&original_settings, 1)

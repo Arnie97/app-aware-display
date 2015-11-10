@@ -24,3 +24,5 @@ HANDLE shell(char *cmd, int style):
         /* Close the unused thread handle. */
         CloseHandle(pi.hThread)
         return pi.hProcess
+    else:
+        return NULL
