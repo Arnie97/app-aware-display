@@ -93,10 +93,13 @@ int parse_options(DEVMODE *dev):
                     opt_code
                 case 'w':
                     dev->dmPelsWidth = n
+                    dev->dmFields |= DM_PELSWIDTH
                 case 'h':
                     dev->dmPelsHeight = n
+                    dev->dmFields |= DM_PELSHEIGHT
                 case 'b':
                     dev->dmBitsPerPel = n
+                    dev->dmFields |= DM_BITSPERPEL
                 case 's':
                     dev->dmReserved1 = n
         case '?':
