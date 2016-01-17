@@ -37,11 +37,11 @@ int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmd
     else:
         style = nCmdShow
 
-    ChangeDisplaySettings(&updated_settings, 1)
+    int result = ChangeDisplaySettings(&updated_settings, 1)
 
     /* If no program is specified, it's done. */
     if optind >= argc:
-        return EXIT_SUCCESS
+        return result
 
     /* Otherwise, concentrate all remaining arguments to a string. */
     char cmd[strlen(lpCmdLine)]
@@ -60,9 +60,7 @@ int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmd
         show_help(EXIT_FAILURE, "Failed to execute the specified program.")
 
     /* Then restore the original display settings. */
-    ChangeDisplaySettings(&original_settings, 1)
-
-    return EXIT_SUCCESS
+    return ChangeDisplaySettings(&original_settings, 1)
 
 
 int parse_options(DEVMODE *dev):
