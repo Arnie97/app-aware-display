@@ -58,6 +58,7 @@ int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmd
 
 
 int parse_options(DEVMODE *dev, int *style):
+    dev->dmFields = 0  // Clear all bits
     opterr = 0  // Suppress default error output
     static option long_opts[] = {
         {"help",    no_argument,       NULL, 'H'},
