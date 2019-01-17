@@ -1,3 +1,4 @@
 *	text eol=lf
+*.ico	binary
 *.c.k	linguist-language=c
 *.h.k	linguist-language=c
