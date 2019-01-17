@@ -17,21 +17,15 @@ int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmd
     updated_settings = original_settings
 
     /* Parse command line options into the DEVMODE structure */
-    updated_settings.dmReserved1 = 0
-    if parse_options(&updated_settings) == 0:
+    int style = -1
+    if !parse_options(&updated_settings, &style):
         show_help(EXIT_SUCCESS, NULL)
 
-    int style
     /* If how the window is to be shown is specified, */
-    if updated_settings.dmReserved1:
+    if style >= 0:
         /* Then a program command line must be given at the same time. */
         if optind >= argc:
             show_help(EXIT_FAILURE, "command line is required to be given with '--style'")
-        else:
-            /* Ready to use the specified window style */
-            style = updated_settings.dmReserved1
-            /* This field should always be zero */
-            updated_settings.dmReserved1 = 0
 
     /* Otherwise, use inherited options. */
     else:
@@ -63,11 +57,10 @@ int APIENTRY WinMain(HINSTANCE hCurr, HINSTANCE hPrev, char *lpCmdLine, int nCmd
     return ChangeDisplaySettings(&original_settings, 1)
 
 
-int parse_options(DEVMODE *dev):
+int parse_options(DEVMODE *dev, int *style):
     opterr = 0  // Suppress default error output
     static option long_opts[] = {
         {"help",    no_argument,       NULL, 'H'},
-        {"version", no_argument,       NULL, 'V'},
         {"width",   required_argument, NULL, 'w'},
         {"height",  required_argument, NULL, 'h'},
         {"bits",    required_argument, NULL, 'b'},
@@ -79,29 +72,28 @@ int parse_options(DEVMODE *dev):
     /* Iterate through the option list */
     repeat opt_code != -1:
         switch:
-            opt_code = getopt_long(argc, argv, "HVw:h:d:b:s:", long_opts, &opt_index)
+            opt_code = getopt_long(argc, argv, "Hw:h:d:b:s:", long_opts, &opt_index)
         case -1:  // The end of the list is reached
             continue
-        case 'H', 'V':  // Show help or version information and exit
+        case 'H':
             show_help(EXIT_SUCCESS, NULL)
         case 'w', 'h', 'd', 's':
             int n = strtoi(optarg)
             if n == -1:
                 show_help(EXIT_FAILURE, optarg)
-            else:
-                switch:
-                    opt_code
-                case 'w':
-                    dev->dmPelsWidth = n
-                    dev->dmFields |= DM_PELSWIDTH
-                case 'h':
-                    dev->dmPelsHeight = n
-                    dev->dmFields |= DM_PELSHEIGHT
-                case 'b':
-                    dev->dmBitsPerPel = n
-                    dev->dmFields |= DM_BITSPERPEL
-                case 's':
-                    dev->dmReserved1 = n
+            switch:
+                opt_code
+            case 'w':
+                dev->dmPelsWidth = n
+                dev->dmFields |= DM_PELSWIDTH
+            case 'h':
+                dev->dmPelsHeight = n
+                dev->dmFields |= DM_PELSHEIGHT
+            case 'b':
+                dev->dmBitsPerPel = n
+                dev->dmFields |= DM_BITSPERPEL
+            case 's':
+                *style = n
         case '?':
             show_help(EXIT_FAILURE, argv[optind])
         opt_count++
@@ -125,8 +117,7 @@ void show_help(int exit_code, char *msg):
         "%s%s%s"
         "Usage: %s [options] [command [arg]...]\n"
         "Options:\n"
-        "  -H, --help    Display this information\n"
-        "  -V, --version Display version information\n"
+        "  -H, --help    Display this help message\n"
         "  -w, --width   Specify display width in pixels\n"
         "  -h, --height  Specify display height in pixels\n"
         "  -b, --bits    Specify color resolution (bits per pixel)\n"
@@ -140,5 +131,4 @@ void show_help(int exit_code, char *msg):
         *argv
     )
     MessageBox(NULL, text, NULL, MB_ICONINFORMATION)
-
     exit(exit_code)

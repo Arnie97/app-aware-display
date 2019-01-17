@@ -9,4 +9,4 @@ Usage
 Changes the display mode to match specified options.
 If a program command is present, then invokes it with given arguments, waits until it exits, and adjusts the display mode back to the original.
 
-See the available options [here](app-aware-display.c.k#L127-L133), and arguments for the `--style` option [here](https://msdn.microsoft.com/EN-US/library/office/gg278437.aspx).
+See the available options [here](app-aware-display.c.k#L119), and arguments for the `--style` option [here](https://msdn.microsoft.com/EN-US/library/office/gg278437.aspx).
